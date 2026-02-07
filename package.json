@@ -21,6 +21,7 @@
   "homepage": "https://github.com/open-ER/Backend#readme",
   "dependencies": {
     "cors": "^2.8.6",
+    "csvtojson": "^2.0.14",
     "dotenv": "^17.2.4",
     "express": "^5.2.1",
     "mongoose": "^9.1.6"
