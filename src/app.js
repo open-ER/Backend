@@ -28,4 +28,4 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec))
 
 const wineRoutes = require('./routes/wineRoutes')
 
-app.use('/api/wines', wineRoutes)
+app.use('/wines', wineRoutes)
