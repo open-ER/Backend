@@ -9,8 +9,16 @@ const { getAllWines, filterWines, searchWines, compareWines, getFilterOptions } 
  * /wines:
  *   get:
  *     summary: 전체 와인 조회
- *     description: 필터 없이 와인 목록을 조회합니다 (메인 카탈로그용)
+ *     description: 전체 와인 목록을 조회하며 page 기준으로 100개씩 반환됩니다.
  *     tags: [Wines]
+ *     parameters:
+ *       - in: query
+ *         name: page
+ *         required: false
+ *         description: 페이지 번호 (기본값 1, 페이지당 100개 반환)
+ *         schema:
+ *           type: integer
+ *           example: 1
  *     responses:
  *       200:
  *         description: 전체 와인 목록 반환
@@ -37,29 +45,85 @@ router.get('/filter-options', getFilterOptions)
  * /wines/filter:
  *   post:
  *     summary: 와인 필터 조회
- *     description: 가격, 타입, 국가, 빈티지, 맛 프로필 등 조건으로 와인 필터링
+ *     description: 사용자가 선택한 필터 조건에 맞는 와인 목록을 조회하며 page 기준으로 100개씩 반환됩니다.
  *     tags: [Wines]
  *     requestBody:
  *       required: true
  *       content:
  *         application/json:
- *           example:
- *             price_krw_min: 0
- *             price_krw_max: 500000
- *             wine_type: ["레드", "화이트"]
- *             country: ["프랑스", "이탈리아"]
- *             vintage: [2023, 2022]
- *             grape_or_style: ["샤르도네(오크 숙성)"]
- *             tannin_min: 1
- *             tannin_max: 5
- *             sweetness_min: 1
- *             sweetness_max: 5
- *             acidity_min: 1
- *             acidity_max: 5
- *             body_min: 1
- *             body_max: 5
- *             alcohol_min: 0
- *             alcohol_max: 25
+ *           schema:
+ *             type: object
+ *             properties:
+ *               page:
+ *                 type: integer
+ *                 description: 페이지 번호 (기본값 1, 페이지당 100개 반환)
+ *                 example: 1
+ *
+ *               price_krw_min:
+ *                 type: integer
+ *                 example: 0
+ *               price_krw_max:
+ *                 type: integer
+ *                 example: 500000
+ *
+ *               wine_type:
+ *                 type: array
+ *                 items:
+ *                   type: string
+ *                 example: ["레드", "화이트"]
+ *
+ *               country:
+ *                 type: array
+ *                 items:
+ *                   type: string
+ *                 example: ["프랑스", "이탈리아"]
+ *
+ *               vintage:
+ *                 type: array
+ *                 items:
+ *                   type: integer
+ *                 example: [2023, 2022]
+ *
+ *               grape_or_style:
+ *                 type: array
+ *                 items:
+ *                   type: string
+ *                 example: ["샤르도네(오크 숙성)"]
+ *
+ *               tannin_min:
+ *                 type: number
+ *                 example: 1
+ *               tannin_max:
+ *                 type: number
+ *                 example: 5
+ *
+ *               sweetness_min:
+ *                 type: number
+ *                 example: 1
+ *               sweetness_max:
+ *                 type: number
+ *                 example: 5
+ *
+ *               acidity_min:
+ *                 type: number
+ *                 example: 1
+ *               acidity_max:
+ *                 type: number
+ *                 example: 5
+ *
+ *               body_min:
+ *                 type: number
+ *                 example: 1
+ *               body_max:
+ *                 type: number
+ *                 example: 5
+ *
+ *               alcohol_min:
+ *                 type: number
+ *                 example: 0
+ *               alcohol_max:
+ *                 type: number
+ *                 example: 25
  *     responses:
  *       200:
  *         description: 필터된 와인 목록 반환
@@ -72,15 +136,24 @@ router.post('/filter', filterWines)
  * /wines/search:
  *   get:
  *     summary: 와인 검색
- *     description: 와인 이름, 국가, 지역, 품종, 향에서 키워드 검색
+ *     description: 와인 이름, 국가, 지역, 품종, 향에서 키워드를 검색하며 page 기준으로 100개씩 반환됩니다.
  *     tags: [Wines]
  *     parameters:
  *       - in: query
  *         name: keyword
+ *         required: true
+ *         description: 검색 키워드 (와인명, 국가, 지역, 품종, 향 등)
  *         schema:
  *           type: string
- *         required: true
- *         example: 샤르도네
+ *           example: 화이트
+ *
+ *       - in: query
+ *         name: page
+ *         required: false
+ *         description: 페이지 번호 (기본값 1, 페이지당 100개 반환)
+ *         schema:
+ *           type: integer
+ *           example: 1
  *     responses:
  *       200:
  *         description: 검색 결과 반환

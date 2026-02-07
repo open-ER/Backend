@@ -3,16 +3,21 @@ const Wine = require('../models/wine')
 // 전체 목록 조회
 exports.getAllWines = async (req, res) => {
   try {
+    const page = Number(req.query.page) || 1
+    const limit = 100
+    const skip = (page - 1) * limit
+
     const total = await Wine.countDocuments()
-    const wines = await Wine.find().limit(100)
+
+    const wines = await Wine.find().skip(skip).limit(limit).lean()
 
     res.json({
-      total: total,
-      wines: wines,
+      total,
+      page,
+      wines,
     })
   } catch (error) {
-    console.error(error)
-    res.status(500).json({ message: '서버 오류' })
+    res.status(500).json({ message: '조회 실패' })
   }
 }
 
@@ -39,7 +44,10 @@ exports.getFilterOptions = async (req, res) => {
 // 필터링 목록 조회
 exports.filterWines = async (req, res) => {
   try {
-    const { price_krw_min, price_krw_max, wine_type, country, vintage, grape_or_style, tannin_min, tannin_max, sweetness_min, sweetness_max, acidity_min, acidity_max, body_min, body_max, alcohol_min, alcohol_max } = req.body
+    const { page = 1, price_krw_min, price_krw_max, wine_type, country, vintage, grape_or_style, tannin_min, tannin_max, sweetness_min, sweetness_max, acidity_min, acidity_max, body_min, body_max, alcohol_min, alcohol_max } = req.body
+
+    const limit = 100
+    const skip = (page - 1) * limit
 
     const query = {}
 
@@ -106,10 +114,12 @@ exports.filterWines = async (req, res) => {
     }
 
     const total = await Wine.countDocuments(query)
-    const wines = await Wine.find(query).limit(200)
+
+    const wines = await Wine.find(query).skip(skip).limit(limit).lean()
 
     res.json({
       total,
+      page,
       wines,
     })
   } catch (error) {
@@ -121,7 +131,11 @@ exports.filterWines = async (req, res) => {
 // 검색 조회
 exports.searchWines = async (req, res) => {
   try {
-    const { keyword } = req.query
+    const keyword = req.query.keyword || ''
+    const page = Number(req.query.page) || 1
+
+    const limit = 100
+    const skip = (page - 1) * limit
 
     // 키워드 없으면 빈 배열 반환
     if (!keyword) {
@@ -140,11 +154,13 @@ exports.searchWines = async (req, res) => {
     const wines = await Wine.find({
       $or: [{ wine_name: regex }, { country: regex }, { subregion: regex }, { grape_or_style: regex }, { aromas: regex }, { wine_type: regex }],
     })
-      .limit(200)
+      .skip(skip)
+      .limit(limit)
       .lean()
 
     res.json({
       total,
+      page,
       wines,
     })
   } catch (error) {
