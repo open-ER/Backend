@@ -12,7 +12,7 @@ http://opener-api.ap-northeast-2.elasticbeanstalk.com/
 ```
 - Swagger API Docs  
 ```
-http://opener-api.ap-northeast-2.elasticbeanstalk.com//api-docs
+http://opener-api.ap-northeast-2.elasticbeanstalk.com/api-docs
 ```
 
 ## 🛠 Tech Stack
