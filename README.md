@@ -73,7 +73,7 @@ npm start
 node src/app.js
 ```
 ## 📦 주요 기능
-[api 명세서](https://www.notion.so/hanyj0317/open-ER-API-300ae1d9e22f80c79da1d676df49d940)
+[api 명세서](https://hanyj0317.notion.site/open-ER-API-300ae1d9e22f80c79da1d676df49d940)
 
 ### 1️⃣ 전체 와인 조회
 - 메인 카탈로그용 데이터 조회
