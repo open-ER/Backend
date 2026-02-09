@@ -8,11 +8,11 @@ Node.js + Express + MongoDB 기반으로 와인 데이터 조회, 필터링, 검
 
 - API Server 
 ```
-http://opener-api.ap-northeast-2.elasticbeanstalk.com/
+https://opener-api.onrender.com/
 ```
 - Swagger API Docs  
 ```
-http://opener-api.ap-northeast-2.elasticbeanstalk.com/api-docs
+https://opener-api.onrender.com/api-docs/
 ```
 
 ## 🛠 Tech Stack
